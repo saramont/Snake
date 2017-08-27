@@ -5,7 +5,6 @@ function BaseObj:new(x, y, spriteSheet)
   self.y = y
   
   self.spriteSheet = spriteSheet
-  --self.quad = quad
 end
 
 function BaseObj:draw()
@@ -51,7 +50,7 @@ function RedApple:new(x, y, image)
   self.quad = love.graphics.newQuad(48, 0, 8, 8, self.spriteSheet:getDimensions())
 end
 
-----------------BODY PART
+----------------BODY PART---------------------------
 
 BodyPart = BaseObj:extend()
 
@@ -60,7 +59,7 @@ function BodyPart:new(x, y, image)
   self.quad = love.graphics.newQuad(40, 24, 8, 8, self.spriteSheet:getDimensions())
 end
 
-------------SNAKE HEAD-------------------
+------------SNAKE HEAD------------------------
 
 SnakeHead = BaseObj:extend()
 
