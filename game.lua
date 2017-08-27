@@ -47,14 +47,14 @@ function Game:new()
 end
 
 function Game:update(dt)
--- controlla se hai vinto
+-- checks if you have won
   if #self.bodyParts >= 299 then
     won = true
     play = false
     start = false
     credit = false
   end
--- aggiorna posizione snake
+-- updates snake position
   timer = timer + dt
   if timer > 1/self.speed then
     self:moveSnake()
@@ -62,7 +62,7 @@ function Game:update(dt)
     timer = 0
   end
   
--- controllo collisioni
+-- checks for collisions
   if self:collision() then
     lost = true
     play = false
@@ -71,9 +71,10 @@ function Game:update(dt)
   end
   
   self:appleEaten()
--- controlla se va inserita la redApple o la goldenApple
+-- checks whether golden apple or red apple should be inserted
   self:appleInsert()
-  
+ 
+  -- removes golden apple if 6 seconds have passed
   if #self.goldenApple == 1 then
     gtimer = gtimer + dt 
     if gtimer >= 6 then
@@ -159,11 +160,11 @@ end
 
 
 function Game:collision() 
--- controlla se va a sbattere nel muro
+-- checks if snake collides with the wall
   if self.tilemap[self.snakeHead.y + 1][self.snakeHead.x +1] ~= 0 then   
     return true
   end
-  -- controlla se si mangia da solo
+  -- checks if snake eat himself
   for i = 2, #self.bodyParts do
     if self.snakeHead.x == self.bodyParts[i].x and self.snakeHead.y == self.bodyParts[i].y then
       return true
@@ -174,7 +175,6 @@ function Game:collision()
 end
 
 function Game:appleInsert() 
- -- local possibleCoordinates = self:possibleAppleSpots()
   
   if #self.redApple < 1 then
     local possibleCoordinates = self:possibleAppleSpots()
@@ -206,7 +206,7 @@ function Game:appleInsert()
 end
 
 
--- se snake mangia apple/biscuit, toglie apple e allunga snake
+-- if snake eats apple/biscuits removes apple/biscuit and lenghtens the snake
 function Game:appleEaten()
   if #self.redApple == 1 then
     if self.snakeHead.x == self.redApple[1].x and self.snakeHead.y == self.redApple[1].y then
@@ -234,7 +234,7 @@ function Game:appleEaten()
 end
 
 
--- restituisce un table che contiene tutte le coordinate dove è possibile inserire apple/biscuit
+-- returns a table in which are the possible coordinates to insert apple/biscuit
 function Game:possibleAppleSpots()
   local possibleCoordinates = {}
   for i = 1, 23 do    
@@ -247,7 +247,7 @@ function Game:possibleAppleSpots()
   return possibleCoordinates
 end
 
--- controla se c'è una parte di snake alle coordinate X e Y
+-- checks if there is the snake at X,Y coordinates
 function Game:isSnake(X, Y)
   for i = 1, #self.bodyParts do  
     if self.bodyParts[i].x == X and self.bodyParts[i].y == Y then
@@ -257,7 +257,7 @@ function Game:isSnake(X, Y)
   return false
 end
 
--- controlla se c'è una mela (red o golden) o un biscuit alle coordinate X e Y
+-- checks if there is apple/biscuit at X,Y coordinates
 function Game:isApple(X, Y)
   if #self.redApple == 1 then
     if self.redApple[1].x == X and self.redApple[1].y == Y then
